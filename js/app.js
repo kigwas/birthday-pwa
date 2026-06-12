@@ -1,6 +1,7 @@
 /**
- * BIRTHDAY CELEBRATION PWA - PHASE 1
- * Premium Glassmorphism & Animation Design
+ * BIRTHDAY CELEBRATION PWA - PHASE 1 & 2
+ * Main Application JavaScript
+ * Premium Glassmorphism PWA with Birthday Countdown, Letter & Timeline
  */
 
 // ============================================
@@ -24,7 +25,62 @@ const CONFIG = {
     particleCount: 100,
     spread: 70,
     origin: { y: 0.6 }
-  }
+  },
+
+  // Letter content - Customize this
+  letter: {
+    title: 'A Letter for You',
+    content: `
+      <p>Dear Someone Special,</p>
+      
+      <p>As your birthday approaches, I wanted to take a moment to tell you how much you mean to me. This digital experience is a small token of my appreciation for all the joy and light you bring into my life.</p>
+      
+      <p>You deserve all the happiness in the world, and I hope this celebration brings you even a fraction of the smile you give others.</p>
+      
+      <p>Thank you for being exactly who you are.</p>
+      
+      <p>With all my love,<br>Your Admirer</p>
+    `
+  },
+
+  // Timeline events - Customize with your memories
+  timeline: [
+    {
+      date: '2024-01-15',
+      title: 'A Wonderful Beginning',
+      description: 'This is when our story started. A moment that changed everything.',
+      image: 'image1.jpg',
+      year: 2024
+    },
+    {
+      date: '2024-06-20',
+      title: 'Summer Adventures',
+      description: 'Making beautiful memories under the sun. These moments will stay with us forever.',
+      image: 'image2.jpg',
+      year: 2024
+    },
+    {
+      date: '2024-12-01',
+      title: 'Year End Reflections',
+      description: 'Another year of joy and growth. Thank you for every moment.',
+      image: 'image3.jpg',
+      year: 2024
+    },
+    {
+      date: '2025-03-10',
+      title: 'Special Birthday Celebration',
+      description: 'Another year older, more wise, and more amazing than before.',
+      image: 'image4.jpg',
+      year: 2025
+    },
+    {
+      date: '2025-08-15',
+      title: 'Dreams and Goals',
+      description: 'Watching you achieve your dreams brings me so much happiness.',
+      image: 'image5.jpg',
+      year: 2025
+    }
+  ]
 };
 
 // Adjust if birthday has passed this year
@@ -239,6 +295,99 @@ class CountdownTimer {
 }
 
 // ============================================
+// LETTER FEATURE (PHASE 2)
+// ============================================
+
+class LetterFeature {
+  constructor() {
+    this.envelope = document.getElementById('envelope');
+    this.letterContent = document.getElementById('letterContent');
+    this.letterBody = document.getElementById('letterBody');
+    this.init();
+  }
+
+  init() {
+    if (this.envelope) {
+      this.envelope.addEventListener('click', () => this.toggleLetter());
+    }
+    this.renderLetter();
+  }
+
+  renderLetter() {
+    if (this.letterBody) {
+      this.letterBody.innerHTML = CONFIG.letter.content;
+    }
+  }
+
+  toggleLetter() {
+    if (this.letterContent && this.envelope) {
+      const isOpen = this.letterContent.style.display !== 'none';
+      this.letterContent.style.display = isOpen ? 'none' : 'block';
+      this.envelope.classList.toggle('opened');
+    }
+  }
+}
+
+// ============================================
+// TIMELINE FEATURE (PHASE 2)
+// ============================================
+
+class TimelineFeature {
+  constructor() {
+    this.timelineItems = document.getElementById('timelineItems');
+    this.init();
+  }
+
+  init() {
+    this.renderTimeline();
+    this.attachEventListeners();
+  }
+
+  renderTimeline() {
+    if (!this.timelineItems) return;
+
+    this.timelineItems.innerHTML = '';
+
+    CONFIG.timeline.forEach((item, index) => {
+      const timelineItem = document.createElement('div');
+      timelineItem.className = 'timeline-item fade-in-animation';
+      timelineItem.style.animationDelay = `${index * 0.1}s`;
+      timelineItem.innerHTML = `
+        <div class="timeline-marker">${item.year}</div>
+        <div class="timeline-content">
+          <div class="timeline-card">
+            <div class="timeline-image-wrapper">
+              <img src="/assets/images/${item.image}" alt="${item.title}" class="timeline-image" loading="lazy">
+            </div>
+            <div class="timeline-text">
+              <h3>${item.title}</h3>
+              <p class="timeline-date">${this.formatDate(item.date)}</p>
+              <p>${item.description}</p>
+            </div>
+          </div>
+        </div>
+      `;
+
+      this.timelineItems.appendChild(timelineItem);
+    });
+  }
+
+  formatDate(dateString) {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  }
+
+  attachEventListeners() {
+    const cards = document.querySelectorAll('.timeline-card');
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        card.classList.toggle('expanded');
+      });
+    });
+  }
+}
+
+// ============================================
 // NAVIGATION MENU
 // ============================================
 
@@ -313,13 +462,17 @@ class App {
   }
 
   init() {
-    console.log('🎉 Birthday Celebration PWA - Phase 1 Initializing...');
+    console.log('🎉 Birthday Celebration PWA - Phase 1 & 2 Initializing...');
 
     // Initialize managers
     new ThemeManager();
     new NavigationManager();
     new CountdownTimer(CONFIG.birthdayDate);
     new ScrollAnimations();
+
+    // Initialize Phase 2 features
+    new LetterFeature();
+    new TimelineFeature();
 
     // Install prompt listener
     this.setupInstallPrompt();
