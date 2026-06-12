@@ -1,7 +1,7 @@
 /**
- * BIRTHDAY CELEBRATION PWA - PHASE 1 & 2
+ * BIRTHDAY CELEBRATION PWA - PHASE 1, 2 & 3
  * Main Application JavaScript
- * Premium Glassmorphism PWA with Birthday Countdown, Letter & Timeline
+ * Premium Glassmorphism PWA with Birthday Countdown, Letter, Timeline, Gallery & Open When
  */
 
 // ============================================
@@ -80,6 +80,73 @@ const CONFIG = {
       image: 'image5.jpg',
       year: 2025
     }
+  ],
+
+  // Gallery images - Customize with your photos
+  gallery: [
+    { id: 1, image: 'image1.jpg', title: 'First Memory', category: 'all recent', favorite: false },
+    { id: 2, image: 'image2.jpg', title: 'Summer Days', category: 'all', favorite: true },
+    { id: 3, image: 'image3.jpg', title: 'Golden Hour', category: 'all', favorite: true },
+    { id: 4, image: 'image4.jpg', title: 'Celebration', category: 'all recent', favorite: true },
+    { id: 5, image: 'image5.jpg', title: 'Dreams', category: 'all', favorite: false },
+    { id: 6, image: 'image6.jpg', title: 'Adventure', category: 'all recent', favorite: false },
+    { id: 7, image: 'image7.jpg', title: 'Laughter', category: 'all favorites', favorite: true },
+    { id: 8, image: 'image8.jpg', title: 'Moments', category: 'all', favorite: false },
+    { id: 9, image: 'image9.jpg', title: 'Joy', category: 'all recent favorites', favorite: true },
+    { id: 10, image: 'image10.jpg', title: 'Forever', category: 'all', favorite: false }
+  ],
+
+  // Open When cards - Customize messages
+  openWhen: [
+    {
+      title: '💚 Open when you are happy',
+      icon: '😊',
+      message: 'Share your happiness with the world! Your smile is contagious, and I love seeing you radiant with joy. Keep shining!'
+    },
+    {
+      title: '💙 Open when you are sad',
+      icon: '😢',
+      message: 'It\'s okay to feel sad sometimes. Remember, even the darkest nights give way to beautiful sunrises. You are stronger than you know.'
+    },
+    {
+      title: '💜 Open when you are stressed',
+      icon: '😰',
+      message: 'Take a deep breath. You\'ve overcome challenges before, and you\'ll overcome this one too. Be kind to yourself. Rest is not laziness.'
+    },
+    {
+      title: '🧡 Open when you need motivation',
+      icon: '💪',
+      message: 'You are capable of amazing things. Every expert was once a beginner. Keep going, believe in yourself, and never give up on your dreams.'
+    },
+    {
+      title: '❤️ Open when you need encouragement',
+      icon: '🌟',
+      message: 'I believe in you. You are worthy. You are enough. Your potential is limitless, and I\'m cheering for you every step of the way.'
+    },
+    {
+      title: '💛 Open when you miss me',
+      icon: '🫂',
+      message: 'Distance is just a number. My thoughts are always with you. You mean the world to me, and our connection transcends time and space.'
+    }
+  ],
+
+  // Daily inspiration messages
+  inspirationMessages: [
+    '✨ You are braver than you believe, stronger than you seem, and smarter than you think.',
+    '🌟 Today is a perfect day to start something beautiful.',
+    '💫 Your potential is limitless. Your future is bright.',
+    '🌈 Every challenge is an opportunity to grow.',
+    '🎯 You deserve all the good things that are coming your way.',
+    '✨ Progress, not perfection. Keep moving forward.',
+    '💪 You are stronger than yesterday.',
+    '🌸 Be gentle with yourself. Growth takes time.',
+    '🎨 Your story is unique and beautiful.',
+    '🚀 You are capable of extraordinary things.',
+    '💖 You matter more than you know.',
+    '🌺 Bloom where you are planted.',
+    '✨ Every day is a fresh start.',
+    '🎪 Life is what you make it. Make it amazing.',
+    '🌟 You are a work in progress, and that\'s beautiful.',
   ]
 };
 
@@ -159,7 +226,6 @@ class CountdownTimer {
 
   init() {
     this.update();
-    // Update countdown every second
     this.interval = setInterval(() => this.update(), 1000);
   }
 
@@ -183,13 +249,11 @@ class CountdownTimer {
   update() {
     const time = this.calculateTimeRemaining();
 
-    // Update display with animated values
     this.updateElement(this.elements.days, time.days);
     this.updateElement(this.elements.hours, time.hours);
     this.updateElement(this.elements.minutes, time.minutes);
     this.updateElement(this.elements.seconds, time.seconds);
 
-    // Trigger birthday mode when countdown reaches zero
     if (time.isZero && !this.isBirthdayMode) {
       this.triggerBirthdayMode();
     }
@@ -209,15 +273,11 @@ class CountdownTimer {
     this.isBirthdayMode = true;
     clearInterval(this.interval);
 
-    // Show birthday message
     if (this.elements.birthdayMessage) {
       this.elements.birthdayMessage.style.display = 'block';
     }
 
-    // Trigger confetti
     this.triggerConfetti();
-
-    // Play notification sound if available
     this.playNotification();
   }
 
@@ -225,14 +285,12 @@ class CountdownTimer {
     const container = document.getElementById('confettiContainer');
     if (!container) return;
 
-    // Create confetti pieces
     const confettiCount = CONFIG.confetti.particleCount;
     for (let i = 0; i < confettiCount; i++) {
       const confetto = document.createElement('div');
       const randomX = Math.random() * 100;
       const randomDelay = Math.random() * 0.5;
       const randomDuration = 2 + Math.random() * 1;
-      const randomRotation = Math.random() * 360;
       const colors = ['#ec4899', '#a78bfa', '#06b6d4', '#f472b6', '#c084fc'];
       const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
@@ -250,12 +308,9 @@ class CountdownTimer {
       `;
 
       container.appendChild(confetto);
-
-      // Clean up after animation
       setTimeout(() => confetto.remove(), (randomDuration + randomDelay) * 1000);
     }
 
-    // Add confetti fall animation to stylesheet
     if (!document.getElementById('confetti-style')) {
       const style = document.createElement('style');
       style.id = 'confetti-style';
@@ -272,7 +327,6 @@ class CountdownTimer {
   }
 
   playNotification() {
-    // Try to play a notification sound if available
     try {
       const audioContext = new (window.AudioContext || window.webkitAudioContext)();
       const oscillator = audioContext.createOscillator();
@@ -289,7 +343,7 @@ class CountdownTimer {
       oscillator.start(audioContext.currentTime);
       oscillator.stop(audioContext.currentTime + 0.5);
     } catch (e) {
-      // Audio context not available, skip notification sound
+      // Audio context not available
     }
   }
 }
@@ -388,6 +442,178 @@ class TimelineFeature {
 }
 
 // ============================================
+// GALLERY FEATURE (PHASE 3)
+// ============================================
+
+class GalleryFeature {
+  constructor() {
+    this.galleryContainer = document.getElementById('galleryContainer');
+    this.filterButtons = document.querySelectorAll('.filter-btn');
+    this.currentImages = CONFIG.gallery;
+    this.init();
+  }
+
+  init() {
+    this.renderGallery(this.currentImages);
+    this.attachFilterListeners();
+  }
+
+  renderGallery(items) {
+    if (!this.galleryContainer) return;
+    
+    this.galleryContainer.innerHTML = '';
+
+    items.forEach((item, index) => {
+      const galleryItem = document.createElement('div');
+      galleryItem.className = 'gallery-item fade-in-animation';
+      galleryItem.style.animationDelay = `${index * 0.05}s`;
+      galleryItem.innerHTML = `
+        <div class="gallery-image-wrapper" onclick="openLightbox(${item.id})">
+          <img src="/assets/images/${item.image}" alt="${item.title}" class="gallery-image" loading="lazy">
+          <div class="gallery-overlay">
+            <button class="gallery-btn">${item.favorite ? '❤️' : '🤍'}</button>
+          </div>
+        </div>
+        <div class="gallery-info">
+          <h3>${item.title}</h3>
+        </div>
+      `;
+
+      this.galleryContainer.appendChild(galleryItem);
+    });
+  }
+
+  attachFilterListeners() {
+    this.filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        this.filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        this.filterGallery(btn.dataset.filter);
+      });
+    });
+  }
+
+  filterGallery(filter) {
+    if (filter === 'all') {
+      this.currentImages = CONFIG.gallery;
+    } else if (filter === 'favorites') {
+      this.currentImages = CONFIG.gallery.filter(item => item.favorite);
+    } else if (filter === 'recent') {
+      this.currentImages = CONFIG.gallery.slice(-5);
+    }
+    this.renderGallery(this.currentImages);
+  }
+}
+
+// Global lightbox functions
+let currentLightboxIndex = 0;
+let lightboxImages = CONFIG.gallery;
+
+function openLightbox(id) {
+  const lightbox = document.getElementById('lightbox');
+  lightboxImages = CONFIG.gallery;
+  currentLightboxIndex = lightboxImages.findIndex(img => img.id === id);
+  updateLightbox();
+  lightbox.style.display = 'flex';
+}
+
+function closeLightbox() {
+  const lightbox = document.getElementById('lightbox');
+  lightbox.style.display = 'none';
+}
+
+function nextImage() {
+  currentLightboxIndex = (currentLightboxIndex + 1) % lightboxImages.length;
+  updateLightbox();
+}
+
+function prevImage() {
+  currentLightboxIndex = (currentLightboxIndex - 1 + lightboxImages.length) % lightboxImages.length;
+  updateLightbox();
+}
+
+function updateLightbox() {
+  const image = lightboxImages[currentLightboxIndex];
+  document.getElementById('lightboxImage').src = `/assets/images/${image.image}`;
+  document.getElementById('lightboxTitle').textContent = image.title;
+  document.getElementById('lightboxDescription').textContent = `Image ${currentLightboxIndex + 1} of ${lightboxImages.length}`;
+}
+
+// Keyboard navigation for lightbox
+document.addEventListener('keydown', (e) => {
+  const lightbox = document.getElementById('lightbox');
+  if (lightbox.style.display === 'flex') {
+    if (e.key === 'ArrowRight') nextImage();
+    if (e.key === 'ArrowLeft') prevImage();
+    if (e.key === 'Escape') closeLightbox();
+  }
+});
+
+// ============================================
+// OPEN WHEN FEATURE (PHASE 3)
+// ============================================
+
+class OpenWhenFeature {
+  constructor() {
+    this.openWhenGrid = document.getElementById('openWhenGrid');
+    this.init();
+  }
+
+  init() {
+    this.renderOpenWhenCards();
+  }
+
+  renderOpenWhenCards() {
+    if (!this.openWhenGrid) return;
+
+    this.openWhenGrid.innerHTML = '';
+
+    CONFIG.openWhen.forEach((card, index) => {
+      const openWhenCard = document.createElement('div');
+      openWhenCard.className = 'open-when-card fade-in-animation';
+      openWhenCard.style.animationDelay = `${index * 0.1}s`;
+      openWhenCard.innerHTML = `
+        <div class="open-when-header">
+          <span class="open-when-icon">${card.icon}</span>
+          <h3>${card.title}</h3>
+        </div>
+        <div class="open-when-content" style="display: none;">
+          <p>${card.message}</p>
+        </div>
+      `;
+
+      openWhenCard.addEventListener('click', () => this.toggleCard(openWhenCard));
+      this.openWhenGrid.appendChild(openWhenCard);
+    });
+  }
+
+  toggleCard(card) {
+    const content = card.querySelector('.open-when-content');
+    const isOpen = content.style.display !== 'none';
+    content.style.display = isOpen ? 'none' : 'block';
+    card.classList.toggle('opened');
+  }
+}
+
+// ============================================
+// DAILY INSPIRATION
+// ============================================
+
+function generateInspiration() {
+  const messages = CONFIG.inspirationMessages;
+  const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+  const messageElement = document.getElementById('inspirationMessage');
+  
+  if (messageElement) {
+    messageElement.style.opacity = '0';
+    setTimeout(() => {
+      messageElement.textContent = randomMessage;
+      messageElement.style.opacity = '1';
+    }, 300);
+  }
+}
+
+// ============================================
 // NAVIGATION MENU
 // ============================================
 
@@ -445,7 +671,6 @@ class ScrollAnimations {
       });
     }, this.observerOptions);
 
-    // Observe fade-in animations
     document.querySelectorAll('.fade-in-animation').forEach(el => {
       observer.observe(el);
     });
@@ -462,19 +687,22 @@ class App {
   }
 
   init() {
-    console.log('🎉 Birthday Celebration PWA - Phase 1 & 2 Initializing...');
+    console.log('🎉 Birthday Celebration PWA - Phase 1, 2 & 3 Initializing...');
 
-    // Initialize managers
     new ThemeManager();
     new NavigationManager();
     new CountdownTimer(CONFIG.birthdayDate);
     new ScrollAnimations();
 
-    // Initialize Phase 2 features
+    // Phase 2 features
     new LetterFeature();
     new TimelineFeature();
 
-    // Install prompt listener
+    // Phase 3 features
+    new GalleryFeature();
+    new OpenWhenFeature();
+    generateInspiration();
+
     this.setupInstallPrompt();
 
     console.log('✨ Application ready!');
@@ -486,7 +714,6 @@ class App {
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      // Show install button if needed in future phases
     });
 
     window.addEventListener('appinstalled', () => {

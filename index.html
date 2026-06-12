@@ -41,7 +41,8 @@
                 <li><a href="#countdown" class="nav-link">Countdown</a></li>
                 <li><a href="#letter" class="nav-link">Letter</a></li>
                 <li><a href="#timeline" class="nav-link">Timeline</a></li>
-                <li><a href="#coming-soon" class="nav-link">More</a></li>
+                <li><a href="#gallery" class="nav-link">Gallery</a></li>
+                <li><a href="#open-when" class="nav-link">Open When</a></li>
             </ul>
             <div class="navbar-actions">
                 <button class="theme-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle dark/light theme">
@@ -184,32 +185,89 @@
         </div>
     </section>
 
+    <!-- Gallery Section (Phase 3) -->
+    <section id="gallery" class="section gallery-section">
+        <div class="section-container">
+            <div class="section-header">
+                <h2>Photo Gallery</h2>
+                <p>Beautiful moments captured in time</p>
+            </div>
+
+            <div class="gallery-controls">
+                <button class="btn btn-secondary filter-btn active" data-filter="all">All</button>
+                <button class="btn btn-secondary filter-btn" data-filter="favorites">Favorites</button>
+                <button class="btn btn-secondary filter-btn" data-filter="recent">Recent</button>
+            </div>
+
+            <div class="gallery-container" id="galleryContainer">
+                <!-- Gallery items will be generated here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox Modal -->
+    <div class="lightbox" id="lightbox" style="display: none;">
+        <div class="lightbox-overlay" onclick="closeLightbox()"></div>
+        <div class="lightbox-content">
+            <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+            <button class="lightbox-prev" onclick="prevImage()">❮</button>
+            <img src="" alt="" class="lightbox-image" id="lightboxImage">
+            <button class="lightbox-next" onclick="nextImage()">❯</button>
+            <div class="lightbox-info">
+                <h3 id="lightboxTitle"></h3>
+                <p id="lightboxDescription"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Open When Section (Phase 3) -->
+    <section id="open-when" class="section open-when-section">
+        <div class="section-container">
+            <div class="section-header">
+                <h2>Open When...</h2>
+                <p>Messages for every mood and moment</p>
+            </div>
+
+            <div class="open-when-grid" id="openWhenGrid">
+                <!-- Open When cards will be generated here -->
+            </div>
+
+            <div class="daily-inspiration">
+                <div class="inspiration-card">
+                    <h3>💫 Daily Inspiration</h3>
+                    <p id="inspirationMessage">Click to get inspired!</p>
+                    <button class="btn btn-primary" onclick="generateInspiration()">Get Message</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Coming Soon Section -->
     <section id="coming-soon" class="section coming-soon-section">
         <div class="section-container">
             <div class="coming-soon-content">
                 <h2>More Coming Soon...</h2>
-                <p>Phase 3 will bring:</p>
+                <p>Phase 4 will bring:</p>
                 <div class="coming-soon-grid">
                     <div class="coming-soon-card">
-                        <div class="coming-soon-icon">📸</div>
-                        <h3>Photo Gallery</h3>
-                        <p>Beautiful memories in a masonry layout</p>
+                        <div class="coming-soon-icon">🎵</div>
+                        <h3>Music Player</h3>
+                        <p>Custom playlist with playback controls</p>
                     </div>
                     <div class="coming-soon-card">
-                        <div class="coming-soon-icon">💌</div>
-                        <h3>Open When Cards</h3>
-                        <p>Messages for every moment</p>
-                    </div>
-                    <div class="coming-soon-card">
-                        <div class="coming-soon-icon">✨</div>
-                        <h3>Daily Inspiration</h3>
-                        <p>Fresh messages every day</p>
+                        <div class="coming-soon-icon">🌱</div>
+                        <h3>Digital Garden</h3>
+                        <p>Growing garden that evolves with visits</p>
                     </div>
                     <div class="coming-soon-card">
                         <div class="coming-soon-icon">🎁</div>
-                        <h3>Surprise Features</h3>
-                        <p>Interactive surprises await</p>
+                        <h3>Surprise Feature</h3>
+                        <p>Random delightful surprises</p>
+                    </div>
+                    <div class="coming-soon-card">
+                        <div class="coming-soon-icon">✨</div>
+                        <h3>Polish & Optimization</h3>
+                        <p>Final touches and performance</p>
                     </div>
                 </div>
             </div>
